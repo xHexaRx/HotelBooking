@@ -18,13 +18,13 @@ public class BookingRestController {
 	@Autowired
 	BookingService bookingService;
 	
-	@GetMapping("/rooms")
+	@GetMapping("/bookings/rooms")
 	public List<Room> getRooms(@RequestParam("startDate") @DateTimeFormat(iso=DateTimeFormat.ISO.DATE) LocalDate startDate,
 			@RequestParam("endDate") @DateTimeFormat(iso=DateTimeFormat.ISO.DATE) LocalDate endDate){
 		return bookingService.getAvaliableRooms(startDate, endDate);
 	}
 	
-	@GetMapping
+	@GetMapping("/bookings")
 	public void book(@RequestParam("startDate") @DateTimeFormat(iso=DateTimeFormat.ISO.DATE) LocalDate startDate,
 			@RequestParam("endDate") @DateTimeFormat(iso=DateTimeFormat.ISO.DATE) LocalDate endDate,
 			@RequestParam("roomId") Long roomId,

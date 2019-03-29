@@ -7,6 +7,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -19,7 +21,7 @@ public class Guest {
 	private String name;
 	private String email;
 	private String phoneNumber;
-	@OneToMany(mappedBy="guest")private List<Booking> bookings;
+	@JsonIgnore @OneToMany(mappedBy="guest")private List<Booking> bookings;
 	
 	public Guest(String name, String email, String phoneNumber) {
 		this.name=name;
