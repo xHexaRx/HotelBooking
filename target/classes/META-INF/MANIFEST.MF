@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Implementation-Title: HostelManager
+Implementation-Version: 0.0.1-SNAPSHOT
+Built-By: Hexar
+Implementation-Vendor-Id: com.hexar
+Build-Jdk: 1.8.0_144
+Implementation-URL: https://projects.spring.io/spring-boot/#/spring-bo
+ ot-starter-parent/HostelManager
+Created-By: Maven Integration for Eclipse
+
