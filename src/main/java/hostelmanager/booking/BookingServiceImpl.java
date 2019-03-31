@@ -26,7 +26,7 @@ public class BookingServiceImpl implements BookingService {
 	@Autowired
 	private RoomRepository roomRepository;
 	
-	public boolean roomIsAvaliable(LocalDate startDate, LocalDate endDate, Room room) {
+	private boolean roomIsAvaliable(LocalDate startDate, LocalDate endDate, Room room) {
 		boolean isAvaliable = true;
 		List<Booking> bookings = room.getBookings();
 		for(Booking booking : bookings) {
