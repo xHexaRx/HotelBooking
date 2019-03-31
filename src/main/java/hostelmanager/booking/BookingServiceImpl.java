@@ -63,4 +63,28 @@ public class BookingServiceImpl implements BookingService {
 		bookingRepository.deleteById(bookingId);
 	}
 
+	@Override
+	public List<Booking> getBooking() {
+		return (ArrayList<Booking>)bookingRepository.findAll();
+	}
+
+	@Override
+	public Booking getBooking(Long bookingId) {
+		return bookingRepository.findById(bookingId).orElse(null);
+	}
+
+	@Override
+	public Guest getGuest(Long bookingId) {
+		Booking booking=bookingRepository.findById(bookingId).orElse(null);
+		Guest guest = booking.getGuest();
+		return guest;
+	}
+
+	@Override
+	public Room getRoom(Long bookingId) {
+		Booking booking=bookingRepository.findById(bookingId).orElse(null);
+		Room room = booking.getRoom();
+		return room;
+	}
+
 }

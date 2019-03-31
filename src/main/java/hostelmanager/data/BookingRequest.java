@@ -1,4 +1,4 @@
-package hostelmanager;
+package hostelmanager.data;
 
 import java.time.LocalDate;
 
