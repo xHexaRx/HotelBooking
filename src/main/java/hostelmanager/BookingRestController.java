@@ -48,7 +48,7 @@ public class BookingRestController {
 	
 	@GetMapping("/bookings")
 	public List<Booking> getBooking(){
-		return bookingService.getBooking();
+		return bookingService.getBookings();
 	}
 	
 	@GetMapping("/bookings/{id}")

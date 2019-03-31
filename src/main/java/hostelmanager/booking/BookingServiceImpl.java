@@ -64,7 +64,7 @@ public class BookingServiceImpl implements BookingService {
 	}
 
 	@Override
-	public List<Booking> getBooking() {
+	public List<Booking> getBookings() {
 		return (ArrayList<Booking>)bookingRepository.findAll();
 	}
 
