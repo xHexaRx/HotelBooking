@@ -30,8 +30,8 @@ public class GuestRestController {
 	}
 	
 	@PostMapping("/guests")
-	public void addGuest(String name, String email, String phoneNumber) {
-		guestService.addGuest(name, email, phoneNumber);
+	public void addGuest(Guest guest) {
+		guestService.addGuest(guest.getName(), guest.getEmail(), guest.getPhoneNumber());
 	}
 	
 	@DeleteMapping("/guests/{id}")
