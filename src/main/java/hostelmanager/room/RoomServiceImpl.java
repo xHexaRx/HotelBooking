@@ -20,7 +20,6 @@ public class RoomServiceImpl implements RoomService {
 
 	@Override
 	public List<Room> getRooms() {
-		// TODO Auto-generated method stub
 		return (ArrayList<Room>)roomRepository.findAll();
 	}
 
@@ -44,6 +43,7 @@ public class RoomServiceImpl implements RoomService {
 	@Override
 	public List<Booking> getBookings(Long roomId) {
 		Room room = roomRepository.findById(roomId).orElse(null);
+		if(room==null) return null;
 		List<Booking> bookings=room.getBookings();
 		return bookings;
 	}
@@ -51,6 +51,7 @@ public class RoomServiceImpl implements RoomService {
 	@Override
 	public Guest getCurrentGuest(Long roomId) {
 		Booking booking = getCurrentBooking(roomId);
+		if(booking==null) return null;
 		Guest guest = booking.getGuest();
 		return guest;
 	}
@@ -59,6 +60,7 @@ public class RoomServiceImpl implements RoomService {
 	public Booking getCurrentBooking(Long roomId) {
 		LocalDate currentDate = LocalDate.now();
 		Room room = roomRepository.findById(roomId).orElse(null);
+		if(room==null) return null;
 		List<Booking> bookings = room.getBookings();
 		for(Booking booking : bookings) {
 			if(booking.getStartDate().isBefore(currentDate)&&booking.getEndDate().isAfter(currentDate)) return booking;

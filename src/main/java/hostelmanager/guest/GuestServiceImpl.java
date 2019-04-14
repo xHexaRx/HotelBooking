@@ -42,6 +42,7 @@ public class GuestServiceImpl implements GuestService {
 	@Override
 	public List<Booking> getBookings(Long guestId) {
 		Guest guest = guestRepository.findById(guestId).orElse(null);
+		if(guest==null) return null;
 		List<Booking> bookings = guest.getBookings();
 		return bookings;
 	}
@@ -57,6 +58,7 @@ public class GuestServiceImpl implements GuestService {
 	public Booking getCurrentBooking(Long guestId) {
 		LocalDate currentDate = LocalDate.now();
 		Guest guest = guestRepository.findById(guestId).orElse(null);
+		if(guest==null) return null;
 		List<Booking> bookings = guest.getBookings();
 		for(Booking booking : bookings) {
 			if(booking.getStartDate().isBefore(currentDate)&&booking.getEndDate().isAfter(currentDate)) return booking;

@@ -41,6 +41,7 @@ public class BookingServiceImpl implements BookingService {
 	public boolean book(LocalDate startDate, LocalDate endDate, Long roomId, Long guestId) {
 		Room room = roomRepository.findById(roomId).orElse(null);
 		Guest guest = guestRepository.findById(guestId).orElse(null);
+		if(room==null||guest==null) return false;
 		if(roomIsAvaliable(startDate, endDate, room)) {
 			Booking booking = new Booking(startDate, endDate, guest, room);
 			bookingRepository.save(booking);
@@ -76,6 +77,7 @@ public class BookingServiceImpl implements BookingService {
 	@Override
 	public Guest getGuest(Long bookingId) {
 		Booking booking=bookingRepository.findById(bookingId).orElse(null);
+		if(booking==null) return null;
 		Guest guest = booking.getGuest();
 		return guest;
 	}
@@ -83,6 +85,7 @@ public class BookingServiceImpl implements BookingService {
 	@Override
 	public Room getRoom(Long bookingId) {
 		Booking booking=bookingRepository.findById(bookingId).orElse(null);
+		if(booking==null) return null;
 		Room room = booking.getRoom();
 		return room;
 	}
