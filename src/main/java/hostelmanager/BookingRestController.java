@@ -42,6 +42,7 @@ public class BookingRestController {
 	 */
 	@PostMapping("/bookings")
 	public ResponseEntity<String> book(@RequestBody BookingRequest booking) {
+		if(booking==null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		boolean result = bookingService.book(booking.getStartDate(), booking.getEndDate(), booking.getRoomId(), booking.getGuestId());
 		if(result) return new ResponseEntity<>(HttpStatus.CREATED); 
 		else return new ResponseEntity<>(HttpStatus.NOT_FOUND); 
