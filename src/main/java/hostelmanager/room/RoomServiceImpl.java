@@ -24,9 +24,10 @@ public class RoomServiceImpl implements RoomService {
 	}
 
 	@Override
-	public void addRoom(String name, int maxPeople, int price) {
+	public boolean addRoom(String name, int maxPeople, int price) {
 		Room room = new Room(name,maxPeople,price);
 		roomRepository.save(room);
+		return true;
 	}
 
 	@Override

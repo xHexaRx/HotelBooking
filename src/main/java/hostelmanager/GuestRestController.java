@@ -1,6 +1,8 @@
 package hostelmanager;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,38 +22,51 @@ public class GuestRestController {
 	GuestService guestService;
 	
 	@GetMapping("/guests")
-	public List<Guest> getGuests(){
-		return guestService.getGuests();
+	public ResponseEntity<List<Guest>> getGuests(){
+		List<Guest> result = guestService.getGuests();
+		if(result==null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		else return new ResponseEntity<List<Guest>>(result, HttpStatus.OK);
 	}
 	
 	@GetMapping("/guests/{id}")
-	public Guest getGuest(@PathVariable("id") Long guestId) {
-		return guestService.getGuest(guestId);
+	public ResponseEntity<Guest> getGuest(@PathVariable("id") Long guestId) {
+		Guest result = guestService.getGuest(guestId);
+		if(result==null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		else return new ResponseEntity<Guest>(result, HttpStatus.OK);
 	}
 	
 	@PostMapping("/guests")
-	public void addGuest(Guest guest) {
-		guestService.addGuest(guest.getName(), guest.getEmail(), guest.getPhoneNumber());
+	public ResponseEntity<String> addGuest(Guest guest) {
+		boolean result = guestService.addGuest(guest.getName(), guest.getEmail(), guest.getPhoneNumber());
+		if(result) return new ResponseEntity<>(HttpStatus.CREATED);
+		else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 	
 	@DeleteMapping("/guests/{id}")
-	public void deleteGuest(@PathVariable("id") Long guestId) {
+	public ResponseEntity<String> deleteGuest(@PathVariable("id") Long guestId) {
 		guestService.deleteGuest(guestId);
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 	
 	@GetMapping("/guests/{id}/bookings")
-	public List<Booking> getBookings(@PathVariable("id") Long guestId){
-		return guestService.getBookings(guestId);
+	public ResponseEntity<List<Booking>> getBookings(@PathVariable("id") Long guestId){
+		List<Booking> result = guestService.getBookings(guestId);
+		if(result==null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		else return new ResponseEntity<List<Booking>>(result, HttpStatus.OK);
 	}
 	
 	@GetMapping("/guests/{id}/room")
-	public Room getCurrentRoom(@PathVariable("ïd") Long guestId) {
-		return guestService.getCurrentRoom(guestId);
+	public ResponseEntity<Room> getCurrentRoom(@PathVariable("ïd") Long guestId) {
+		Room result = guestService.getCurrentRoom(guestId);
+		if(result==null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		else return new ResponseEntity<Room>(result, HttpStatus.OK);
 	}
 	
 	@GetMapping("/guests/{id}/booking")
-	public Booking getCurrentBooking(@PathVariable("id") Long guestId) {
-		return guestService.getCurrentBooking(guestId);
+	public ResponseEntity<Booking> getCurrentBooking(@PathVariable("id") Long guestId) {
+		Booking result = guestService.getCurrentBooking(guestId);
+		if(result==null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		else return new ResponseEntity<Booking>(result, HttpStatus.OK);
 	}
 
 }

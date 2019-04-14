@@ -29,9 +29,10 @@ public class GuestServiceImpl implements GuestService {
 	}
 
 	@Override
-	public void addGuest(String name, String email, String phoneNumber) {
+	public boolean addGuest(String name, String email, String phoneNumber) {
 		Guest guest = new Guest(name,email,phoneNumber);
 		guestRepository.save(guest);
+		return true;
 	}
 
 	@Override

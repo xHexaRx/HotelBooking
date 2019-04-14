@@ -8,7 +8,7 @@ import hostelmanager.data.Room;
 
 public interface RoomService {
 	public List<Room> getRooms();
-	public void addRoom(String name, int maxPeople, int price);
+	public boolean addRoom(String name, int maxPeople, int price);
 	public void deleteRoom(Long roomId);
 	public Room getRoom(Long roomId);
 	public List<Booking> getBookings(Long roomId);
