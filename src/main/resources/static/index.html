@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>HostelManager</title>
+    </head>
+    <body>
+        <h1 align="center">Hostel Manager</h1>
+        <button id="getRoomsButton" onclick='getRequest("/rooms", displayRooms)'>Rooms</button>
+        <button id="getGuestsButton" onclick='getRequest("/guests", displayGuests)'>Guests</button>
+        <button id="getBookingsButton" onclick='getRequest("/bookings", displayBookings)'>Bookings</button>
+        <p id="responseArea"></p>
+        <script>
+            function getRequest(requestAdress, callbackFunction){
+                var xmlh = new XMLHttpRequest();
+                xmlh.onreadystatechange = function() {
+                    if(this.readyState==4 && this.status==200){
+                        callbackFunction(this); // TODO: Add JSON object length check
+                    }
+                };
+                xmlh.open("GET", requestAdress, true);
+                xmlh.send();
+            }
+        
+            function displayGuests(responseJSON){ 
+                var responseObject = JSON.parse(responseJSON.responseText);
+                var i=0;
+                var resultString = "<table><tr><th>Name</th><th>Email</th><th>Phone Number</th></tr>";
+                for(i in responseObject){
+                    resultString+="<tr><td>"+responseObject[i].name+"</td><td>"+responseObject[i].email+
+                        "</td><td>"+responseObject[i].phoneNumber+"</td></tr>";
+                }
+                resultString+="</table>";
+                document.getElementById("responseArea").innerHTML = resultString;
+            }
+            
+            function displayRooms(responseJSON){
+                var responseObject = JSON.parse(responseJSON.responseText);
+                var i=0;
+                var resultString = "<table><tr><th>Name</th><th>Max People</th><th>Price</th></tr>";
+                for(i in responseObject){
+                    resultString+="<tr><td>"+responseObject[i].name+"</td><td>"+responseObject[i].maxPeople+
+                        "</td><td>"+responseObject[i].price+"</td></tr>";
+                }
+                resultString+="</table>";
+                document.getElementById("responseArea").innerHTML = resultString;
+                
+            }
+            
+            function displayBookings(responseJSON){
+                var responseObject = JSON.parse(responseJSON.responseText);
+                var i=0;
+                var resultString = "<table><tr><th>StartDate</th><th>EndDate</th><th>Room</th><th>Guest</th></tr>";
+                for(i in responseObject){
+                    resultString+="<tr><td>"+responseObject[i].startDate+"</td><td>"+responseObject[i].endDate+
+                        "</td><td>"+responseObject[i].room.name+"</td><td>"+responseObject[i].guest.name+"</td></tr>";
+                }
+                resultString+="</table>";
+                document.getElementById("responseArea").innerHTML = resultString;
+            }
+        </script>
+    </body>
+</html>
