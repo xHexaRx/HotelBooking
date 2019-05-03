@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Booking {
 	
-	@Id	@GeneratedValue	private Long bookingId;
+	@Id	@GeneratedValue	private Long id;
 	private LocalDate startDate;
 	private LocalDate endDate;
 	@ManyToOne @JoinColumn(name="roomId") private Room room;

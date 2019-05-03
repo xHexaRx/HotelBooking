@@ -12,6 +12,25 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var date = new Date();
+            var dd = date.getDate();
+            var mm = date.getMonth() + 1;
+            var yyyy = date.getFullYear();
+            if (dd < 10) {
+                dd = '0' + dd
+            }
+            if (mm < 10) {
+                mm = '0' + mm
+            }
+            date = yyyy + '-' + mm + '-' + dd;
+            var startDate = document.getElementById("bookingStartDate");
+            startDate.setAttribute("min", date);
+            startDate.setAttribute("value", date);
+        });
+    </script>
+
     <title>HostelManager</title>
 </head>
 
@@ -20,81 +39,109 @@
         <h1>Hostel Manager</h1>
         <div class="btn-group">
             <button id="getGuestsButton" class="btn btn-outline-dark"
-                onclick='getRequest("/guests")'>Guests</button>
+                onclick='getRequest("/guests", displayResult)'>Guests</button>
             <button id="getRoomsButton" class="btn btn-outline-dark"
-                onclick='getRequest("/rooms")'>Rooms</button>
+                onclick='getRequest("/rooms", displayResult)'>Rooms</button>
             <button id="getBookingsButton" class="btn btn-outline-dark"
-                onclick='getRequest("/bookings")'>Bookings</button>
+                onclick='getRequest("/bookings", displayResult)'>Bookings</button>
         </div>
         <table class="table table-hover" id="responseArea"></table>
         <div class="row">
             <div class="col">
                 <h2>Add Guest</h2>
                 <form name="guestForm" id="guestForm">
-                    <div class="form-group">
-                        <label for="guestName">Name:</label>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label for="guestName" class="input-group-text">Name:</label>
+                        </div>
                         <input id="guestName" type="text" class="form-control" name="name">
                     </div>
-                    <div class="form-group">
-                        <label for="guestEmail">Email:</label>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label for="guestEmail" class="input-group-text">Email:</label>
+                        </div>
                         <input id="guestEmail" type="email" class="form-control" name="email">
                     </div>
-                    <div class="form-group">
-                        <label for="guestPhoneNumber">Phone Number:</label>
-                        <input id="guestPhoneNumber" type="number" class="form-control" name="phoneNumber">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label for="guestPhoneNumber" class="input-group-text">Phone Number:</label>
+                        </div>
+                        <input id="guestPhoneNumber" type="number" class="form-control" name="phoneNumber" maxlength="12">
                     </div>
-                    <button type="button" class="btn btn-primary" onclick="submitFormRequest('/guests','guestForm')">Submit</button>
+                    <button type="button" class="btn btn-primary"
+                        onclick="submitFormRequest('/guests','guestForm')">Submit</button>
                 </form>
             </div>
             <div class="col">
                 <h2>Add Room</h2>
                 <form name="roomForm" id="roomForm">
-                    <div class="form-group">
-                        <label for="roomName">Name:</label>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label for="roomName" class="input-group-text">Name:</label>
+                        </div>
                         <input id="roomName" type="text" class="form-control" name="name">
                     </div>
-                    <div class="form-group">
-                        <label for="roomMaxPeople">Max People:</label>
-                        <input id="roomMaxPeople" type="number" class="form-control" name="maxPeople">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label for="roomMaxPeople" class="input-group-text">Max People:</label>
+                        </div>
+                        <input id="roomMaxPeople" type="number" class="form-control" name="maxPeople" maxlength="1">
                     </div>
-                    <div class="form-group">
-                        <label for="roomPrice">Price:</label>
-                        <input id="roomPrice" type="number" class="form-control" name="price">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label for="roomPrice" class="input-group-text">Price:</label>
+                        </div>
+                        <input id="roomPrice" type="number" class="form-control" name="price" maxlength="6">
+                        <div class="input-group-append">
+                            <span class="input-group-text">USD</span>
+                        </div>
                     </div>
-                    <button type="button" class="btn btn-primary" onclick="submitFormRequest('/rooms','roomForm')">Submit</button>
+                    <button type="button" class="btn btn-primary"
+                        onclick="submitFormRequest('/rooms','roomForm')">Submit</button>
                 </form>
             </div>
             <div class="col">
                 <h2>Add Booking</h2>
                 <form name="bookingForm" id="bookingForm">
-                    <div class="form-group">
-                        <label for="bookingStartDate">Start Date:</label>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label for="bookingStartDate" class="input-group-text">Start Date:</label>
+                        </div>
                         <input id="bookingStartDate" type="date" class="form-control" name="startDate">
                     </div>
-                    <div class="form-group">
-                        <label for="bookingEndDate">End Date:</label>
-                        <input id="bookingEndDate" type="date" class="form-control" name="endDate">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label for="bookingEndDate" class="input-group-text">End Date:</label>
+                        </div>
+                        <input id="bookingEndDate" type="date" class="form-control" name="endDate" onclick="setMinEndDate()">
                     </div>
-                    <div class="form-group">
-                        <label for="bookingRoomId">Room ID:</label>
-                        <input id="bookingRoomId" type="number" class="form-control" name="roomId">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label for="bookingRoomId" class="input-group-text">Room ID:</label>
+                        </div>
+                        <select id="bookingRoomId" class="custom-select" name="roomId">
+                        </select>
                     </div>
-                    <div class="form-group">
-                        <label for="bookingGuestId">Guest ID:</label>
-                        <input id="bookingGuestId" type="number" class="form-control" name="guestId">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label for="bookingGuestId" class="input-group-text">Guest ID:</label>
+                        </div>
+                        <select id="bookingGuestId" class="custom-select" name="guestId">
+                        </select>
                     </div>
-                    <button type="button" class="btn btn-primary" onclick="submitFormRequest('/bookings','bookingForm')">Submit</button>
+                    <button type="button" class="btn btn-primary"
+                        onclick="submitFormRequest('/bookings','bookingForm')">Submit</button>
                 </form>
             </div>
         </div>
     </div>
 
     <script>
-        function getRequest(requestAdress) {
+        function getRequest(requestAdress, callbackFunction) {
             var xmlh = new XMLHttpRequest();
             xmlh.onreadystatechange = function () {
                 if (this.readyState == 4 && this.status == 200) {
-                    displayResult(this);
+                    callbackFunction(this);
                 }
             };
             xmlh.open("GET", requestAdress, true);
@@ -104,6 +151,12 @@
 
         function postRequest(requestAdress, requestBody) {
             var xmlh = new XMLHttpRequest();
+            xmlh.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 201) {
+                    getRequest("/guests", populateGuestId);
+                    getRequest("/rooms", populateRoomId);
+                }
+            }
             xmlh.open("POST", requestAdress, true);
             xmlh.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
             xmlh.send(requestBody);
@@ -111,47 +164,76 @@
 
         function displayResult(response) {
             var responseObject = JSON.parse(response.responseText);
-            console.log(responseObject);
             var resultString = '<thead class="thead-light"><tr>';
-            for(var key in responseObject[0]){
-                resultString+=`<th>${key}</th>`;
+            for (var key in responseObject[0]) {
+                var capitalFirstKey=key.charAt(0).toUpperCase()+key.slice(1);
+                resultString += `<th>${capitalFirstKey}</th>`;
             }
-            resultString+='</tr></thead><tbody>';
-            var objectCounter=0;
-            for(var i in responseObject) {
-                resultString+='<tr>';
-                for(var key in responseObject[i]){
-                    if(typeof responseObject[i][key] === 'object'){
+            resultString += '</tr></thead><tbody>';
+            var objectCounter = 0;
+            for (var i in responseObject) {
+                resultString += '<tr>';
+                for (var key in responseObject[i]) {
+                    if (typeof responseObject[i][key] === 'object') {
                         objectCounter++;
-                        resultString+=`<td><p><button class="btn btn-link" type="button" data-toggle="collapse" data-target="#objectData${objectCounter}" aria-expanded="false" aria-controls="objectData${objectCounter}">
+                        resultString += `<td><button class="btn btn-link" type="button" data-toggle="collapse" data-target="#objectData${objectCounter}" aria-expanded="false" aria-controls="objectData${objectCounter}">
                             ${responseObject[i][key].name}
-                            </button></p>`;
-                        resultString+=`<div id="objectData${objectCounter}" class="collapse">`;
-                        resultString+='<div class="card card-body">';
-                        for(var innerKey in responseObject[i][key]){
-                            resultString+=`<p><strong>${innerKey}:</strong> <small>${responseObject[i][key][innerKey]}</small></p>`;
+                            </button>`;
+                        resultString += `<div id="objectData${objectCounter}" class="collapse">`;
+                        resultString += '<div class="card card-body">';
+                        for (var innerKey in responseObject[i][key]) {
+                            var capitalFirstInnerKey=innerKey.charAt(0).toUpperCase()+innerKey.slice(1);
+                            resultString += `<p><strong>${capitalFirstInnerKey}:</strong> <small>${responseObject[i][key][innerKey]}</small></p>`;
                         }
-                        resultString+="</div></div></td>";
+                        resultString += "</div></div></td>";
                     }
                     else {
-                        resultString+=`<td>${responseObject[i][key]}</td>`;
+                        resultString += `<td>${responseObject[i][key]}</td>`;
                     }
                 }
-                resultString+='</tr>';
+                resultString += '</tr>';
             }
-            resultString+='</tbody>';
-            document.getElementById("responseArea").innerHTML = resultString;            
+            resultString += '</tbody>';
+            document.getElementById("responseArea").innerHTML = resultString;
         }
 
-        function submitFormRequest(requestAdress, formName){
+        function submitFormRequest(requestAdress, formName) {
             var form = document.getElementById(formName);
             var data = new FormData(form);
             var payload = {};
-            data.forEach((value, key) => {payload[key] = value});
+            data.forEach((value, key) => { payload[key] = value });
             form.reset();
             var payloadJSON = JSON.stringify(payload);
             postRequest(requestAdress, payloadJSON);
         }
+
+        function parseSelect(response) {
+            var responseObject = JSON.parse(response.responseText);
+            var resultString = "";
+            for (var i in responseObject) {
+                resultString += `<option value="${responseObject[i].id}">${responseObject[i].id}</option>`;
+            }
+            return resultString;
+        }
+
+        function populateRoomId(response) {
+            var resultString = parseSelect(response);
+            document.getElementById("bookingRoomId").innerHTML = resultString;
+        }
+
+        function populateGuestId(response) {
+            var resultString = parseSelect(response);
+            document.getElementById("bookingGuestId").innerHTML = resultString;
+        }
+
+        function setMinEndDate(){
+            var startDate = document.getElementById("bookingStartDate");
+            startDate.stepUp(1);
+            var date = startDate.value;
+            startDate.stepDown(1);
+            document.getElementById("bookingEndDate").setAttribute("min", date);
+        }
+        
     </script>
 </body>
 

@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Guest {
 	
-	@Id	@GeneratedValue	private Long guestId;	
+	@Id	@GeneratedValue	private Long id;	
 	private String name;
 	private String email;
 	private String phoneNumber;
