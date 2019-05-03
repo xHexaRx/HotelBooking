@@ -28,6 +28,9 @@
             var startDate = document.getElementById("bookingStartDate");
             startDate.setAttribute("min", date);
             startDate.setAttribute("value", date);
+            var endDate = document.getElementById("bookingEndDate");
+            endDate.setAttribute("value", date);
+            endDate.stepUp();
         });
     </script>
 
@@ -141,7 +144,7 @@
             var xmlh = new XMLHttpRequest();
             xmlh.onreadystatechange = function () {
                 if (this.readyState == 4 && this.status == 200) {
-                    callbackFunction(this);
+                    callbackFunction(this, requestAdress);
                 }
             };
             xmlh.open("GET", requestAdress, true);
@@ -155,21 +158,39 @@
                 if (this.readyState == 4 && this.status == 201) {
                     getRequest("/guests", populateGuestId);
                     getRequest("/rooms", populateRoomId);
+                    getRequest(requestAdress, displayResult);
                 }
-            }
+            };
             xmlh.open("POST", requestAdress, true);
             xmlh.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+            console.log(requestBody);
             xmlh.send(requestBody);
         }
 
-        function displayResult(response) {
+        function deleteRequest(requestAdress){
+            var xmlh = new XMLHttpRequest();
+            xmlh.onreadystatechange = function(){
+                if(this.readyState == 4 && this.status == 204){
+                    getRequest("/guests", populateGuestId);
+                    getRequest("/rooms", populateRoomId);
+                    var requestAdressWithoutId=requestAdress.slice(0, requestAdress.lastIndexOf('/'));
+                    console.log(requestAdressWithoutId);
+                    getRequest(requestAdressWithoutId, displayResult);
+                }
+            };
+            xmlh.open("DELETE", requestAdress, true);
+            xmlh.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+            xmlh.send();
+        }
+
+        function displayResult(response, requestAdress) {
             var responseObject = JSON.parse(response.responseText);
             var resultString = '<thead class="thead-light"><tr>';
             for (var key in responseObject[0]) {
                 var capitalFirstKey=key.charAt(0).toUpperCase()+key.slice(1);
                 resultString += `<th>${capitalFirstKey}</th>`;
             }
-            resultString += '</tr></thead><tbody>';
+            resultString += '<th></th></tr></thead><tbody>';
             var objectCounter = 0;
             for (var i in responseObject) {
                 resultString += '<tr>';
@@ -191,7 +212,8 @@
                         resultString += `<td>${responseObject[i][key]}</td>`;
                     }
                 }
-                resultString += '</tr>';
+                var deleteId=requestAdress+"/"+responseObject[i].id;
+                resultString += `<td><button class="btn btn-link" type="button" onclick="deleteRequest('${deleteId}')">Delete</button></td></tr>`;
             }
             resultString += '</tbody>';
             document.getElementById("responseArea").innerHTML = resultString;
@@ -216,12 +238,12 @@
             return resultString;
         }
 
-        function populateRoomId(response) {
+        function populateRoomId(response, requestAdress) {
             var resultString = parseSelect(response);
             document.getElementById("bookingRoomId").innerHTML = resultString;
         }
 
-        function populateGuestId(response) {
+        function populateGuestId(response, requestAdress) {
             var resultString = parseSelect(response);
             document.getElementById("bookingGuestId").innerHTML = resultString;
         }
