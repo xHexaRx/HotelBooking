@@ -2,7 +2,9 @@ package hostelmanager.data;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -21,7 +23,7 @@ public class Guest {
 	private String name;
 	private String email;
 	private String phoneNumber;
-	@JsonIgnore @OneToMany(mappedBy="guest")private List<Booking> bookings;
+	@JsonIgnore @OneToMany(mappedBy="guest", cascade=CascadeType.ALL)private List<Booking> bookings;
 	
 	public Guest(String name, String email, String phoneNumber) {
 		this.name=name;

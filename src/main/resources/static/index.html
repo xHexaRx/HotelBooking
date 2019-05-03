@@ -171,14 +171,14 @@
             var xmlh = new XMLHttpRequest();
             xmlh.onreadystatechange = function(){
                 if(this.readyState == 4 && this.status == 204){
+                    var requestAdressWithoutId=requestAdress.slice(0, requestAdress.lastIndexOf('/'));
+                    getRequest(requestAdressWithoutId, displayResult);
                     getRequest("/guests", populateGuestId);
                     getRequest("/rooms", populateRoomId);
-                    var requestAdressWithoutId=requestAdress.slice(0, requestAdress.lastIndexOf('/'));
-                    console.log(requestAdressWithoutId);
-                    getRequest(requestAdressWithoutId, displayResult);
                 }
             };
             xmlh.open("DELETE", requestAdress, true);
+            console.log(requestAdress);
             xmlh.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
             xmlh.send();
         }
