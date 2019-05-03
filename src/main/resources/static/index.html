@@ -1,172 +1,158 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <!-- Required meta tags -->
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-        <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-        
-        <title>HostelManager</title>
-    </head>
-    <body>
-        <div class="container">
-            <h1>Hostel Manager</h1>
-            <div class="btn-group">
-                <button id="getGuestsButton" class="btn btn-outline-dark" onclick='getRequest("/guests", displayGuests)'>Guests</button>
-                <button id="getRoomsButton" class="btn btn-outline-dark" onclick='getRequest("/rooms", displayRooms)'>Rooms</button>
-                <button id="getBookingsButton" class="btn btn-outline-dark" onclick='getRequest("/bookings", displayBookings)'>Bookings</button>
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <title>HostelManager</title>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Hostel Manager</h1>
+        <div class="btn-group">
+            <button id="getGuestsButton" class="btn btn-outline-dark"
+                onclick='getRequest("/guests")'>Guests</button>
+            <button id="getRoomsButton" class="btn btn-outline-dark"
+                onclick='getRequest("/rooms")'>Rooms</button>
+            <button id="getBookingsButton" class="btn btn-outline-dark"
+                onclick='getRequest("/bookings")'>Bookings</button>
+        </div>
+        <table class="table table-hover" id="responseArea"></table>
+        <div class="row">
+            <div class="col">
+                <h2>Add Guest</h2>
+                <form name="guestForm" id="guestForm">
+                    <div class="form-group">
+                        <label for="guestName">Name:</label>
+                        <input id="guestName" type="text" class="form-control" name="name">
+                    </div>
+                    <div class="form-group">
+                        <label for="guestEmail">Email:</label>
+                        <input id="guestEmail" type="email" class="form-control" name="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="guestPhoneNumber">Phone Number:</label>
+                        <input id="guestPhoneNumber" type="number" class="form-control" name="phoneNumber">
+                    </div>
+                    <button type="button" class="btn btn-primary" onclick="submitFormRequest('/guests','guestForm')">Submit</button>
+                </form>
             </div>
-            <table class="table table-hover" id="responseArea"></table>
-            <div class="row">
-                <div class="col">
-                    <h2>Add Guest</h2>
-                    <form name="guestForm" id="guestForm">
-                        <div class="form-group">
-                            <label for="guestName">Name:</label>
-                            <input id="guestName" type="text" class="form-control" name="name">
-                        </div>
-                        <div class="form-group">
-                            <label for="guestEmail">Email:</label>
-                            <input id="guestEmail" type="email" class="form-control" name="email">
-                        </div>
-                        <div class="form-group">
-                            <label for="guestPhoneNumber">Phone Number:</label>
-                            <input id="guestPhoneNumber" type="number" class="form-control" name="phoneNumber">
-                        </div>
-                        <button type="button" class="btn btn-primary" onclick="guestSubmit()">Submit</button>
-                    </form>
-                </div>
-                <div class="col">
-                    <h2>Add Room</h2>
-                    <form name="roomForm" id="roomForm">
-                        <div class="form-group">
-                            <label for="roomName">Name:</label>
-                            <input id="roomName" type="text" class="form-control" name="name">
-                        </div>
-                        <div class="form-group">
-                            <label for="roomMaxPeople">Max People:</label>
-                            <input id="roomMaxPeople" type="number" class="form-control" name="maxPeople">
-                        </div>
-                        <div class="form-group">
-                            <label for="roomPrice">Price:</label>
-                            <input id="roomPrice" type="number" class="form-control" name="price">
-                        </div>
-                        <button type="button" class="btn btn-primary" onclick="roomSubmit()">Submit</button>
-                    </form>
-                </div>
-                <div class="col">
-                    <h2>Add Booking</h2>
-                    <form name="bookingForm" id="bookingForm">
-                        <div class="form-group">
-                            <label for="bookingStartDate">Start Date:</label>
-                            <input id="bookingStartDate" type="date" class="form-control" name="startDate">
-                        </div>
-                        <div class="form-group">
-                            <label for="bookingEndDate">End Date:</label>
-                            <input id="bookingEndDate" type="date" class="form-control" name="endDate">
-                        </div>
-                        <div class="form-group">
-                            <label for="bookingRoomId">Room ID:</label>
-                            <input id="bookingRoomId" type="number" class="form-control" name="roomId">
-                        </div>
-                        <div class="form-group">
-                            <label for="bookingGuestId">Guest ID:</label>
-                            <input id="bookingGuestId" type="number" class="form-control" name="guestId">
-                        </div>
-                        <button type="button" class="btn btn-primary" onclick="bookingSubmit()">Submit</button>
-                    </form>
-                </div>
+            <div class="col">
+                <h2>Add Room</h2>
+                <form name="roomForm" id="roomForm">
+                    <div class="form-group">
+                        <label for="roomName">Name:</label>
+                        <input id="roomName" type="text" class="form-control" name="name">
+                    </div>
+                    <div class="form-group">
+                        <label for="roomMaxPeople">Max People:</label>
+                        <input id="roomMaxPeople" type="number" class="form-control" name="maxPeople">
+                    </div>
+                    <div class="form-group">
+                        <label for="roomPrice">Price:</label>
+                        <input id="roomPrice" type="number" class="form-control" name="price">
+                    </div>
+                    <button type="button" class="btn btn-primary" onclick="submitFormRequest('/rooms','roomForm')">Submit</button>
+                </form>
+            </div>
+            <div class="col">
+                <h2>Add Booking</h2>
+                <form name="bookingForm" id="bookingForm">
+                    <div class="form-group">
+                        <label for="bookingStartDate">Start Date:</label>
+                        <input id="bookingStartDate" type="date" class="form-control" name="startDate">
+                    </div>
+                    <div class="form-group">
+                        <label for="bookingEndDate">End Date:</label>
+                        <input id="bookingEndDate" type="date" class="form-control" name="endDate">
+                    </div>
+                    <div class="form-group">
+                        <label for="bookingRoomId">Room ID:</label>
+                        <input id="bookingRoomId" type="number" class="form-control" name="roomId">
+                    </div>
+                    <div class="form-group">
+                        <label for="bookingGuestId">Guest ID:</label>
+                        <input id="bookingGuestId" type="number" class="form-control" name="guestId">
+                    </div>
+                    <button type="button" class="btn btn-primary" onclick="submitFormRequest('/bookings','bookingForm')">Submit</button>
+                </form>
             </div>
         </div>
-        
-            <script>
-                function getRequest(requestAdress, callbackFunction){
-                    let xmlh = new XMLHttpRequest();
-                    xmlh.onreadystatechange = function() {
-                        if(this.readyState==4 && this.status==200){
-                            callbackFunction(this);
+    </div>
+
+    <script>
+        function getRequest(requestAdress) {
+            var xmlh = new XMLHttpRequest();
+            xmlh.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    displayResult(this);
+                }
+            };
+            xmlh.open("GET", requestAdress, true);
+            xmlh.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+            xmlh.send();
+        }
+
+        function postRequest(requestAdress, requestBody) {
+            var xmlh = new XMLHttpRequest();
+            xmlh.open("POST", requestAdress, true);
+            xmlh.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+            xmlh.send(requestBody);
+        }
+
+        function displayResult(response) {
+            var responseObject = JSON.parse(response.responseText);
+            console.log(responseObject);
+            var resultString = '<thead class="thead-light"><tr>';
+            for(var key in responseObject[0]){
+                resultString+=`<th>${key}</th>`;
+            }
+            resultString+='</tr></thead><tbody>';
+            var objectCounter=0;
+            for(var i in responseObject) {
+                resultString+='<tr>';
+                for(var key in responseObject[i]){
+                    if(typeof responseObject[i][key] === 'object'){
+                        objectCounter++;
+                        resultString+=`<td><p><button class="btn btn-link" type="button" data-toggle="collapse" data-target="#objectData${objectCounter}" aria-expanded="false" aria-controls="objectData${objectCounter}">
+                            ${responseObject[i][key].name}
+                            </button></p>`;
+                        resultString+=`<div id="objectData${objectCounter}" class="collapse">`;
+                        resultString+='<div class="card card-body">';
+                        for(var innerKey in responseObject[i][key]){
+                            resultString+=`<p><strong>${innerKey}:</strong> <small>${responseObject[i][key][innerKey]}</small></p>`;
                         }
-                    };
-                    xmlh.open("GET", requestAdress, true);
-                    xmlh.send();
-                }
-            
-               function postRequest(requestAdress, requestBody){
-                    let xmlh = new XMLHttpRequest();
-                    xmlh.open("POST", requestAdress, true);
-                    xmlh.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
-                    xmlh.send(requestBody); 
-                }
-        
-                function displayGuests(responseJSON){ 
-                    let responseObject = JSON.parse(responseJSON.responseText);
-                    let i=0;
-                    let resultString = '<thead class="thead-light"><tr><th>ID</th><th>Name</th><th>Email</th><th>Phone Number</th></tr></thead><tbody>';
-                    for(i in responseObject){
-                        resultString+="<tr><td>"+responseObject[i].guestId+"</td><td>"+responseObject[i].name+"</td><td>"+responseObject[i].email+
-                            "</td><td>"+responseObject[i].phoneNumber+"</td></tr>";
+                        resultString+="</div></div></td>";
                     }
-                    resultString+="</tbody>";
-                    document.getElementById("responseArea").innerHTML = resultString;
-                }
-            
-                function displayRooms(responseJSON){
-                    let responseObject = JSON.parse(responseJSON.responseText);
-                    let i=0;
-                    let resultString = '<thead class="thead-light"><tr><th>ID</th><th>Name</th><th>Max People</th><th>Price</th></tr></thead><tbody>';
-                    for(i in responseObject){
-                        resultString+="<tr><td>"+responseObject[i].roomId+"</td><td>"+responseObject[i].name+"</td><td>"+responseObject[i].maxPeople+
-                            "</td><td>"+responseObject[i].price+"</td></tr>";
+                    else {
+                        resultString+=`<td>${responseObject[i][key]}</td>`;
                     }
-                    resultString+="</tbody>";
-                    document.getElementById("responseArea").innerHTML = resultString;
-                
                 }
-            
-                function displayBookings(responseJSON){
-                    let responseObject = JSON.parse(responseJSON.responseText);
-                    let i=0;
-                    let resultString = '<thead class="thead-light"><tr><th>ID</th><th>StartDate</th><th>EndDate</th><th>Room</th><th>Guest</th></tr></thead><tbody>';
-                    for(i in responseObject){
-                        resultString+="<tr><td>"+responseObject[i].bookingId+"</td><td>"+responseObject[i].startDate+"</td><td>"+responseObject[i].endDate+
-                            "</td><td>"+responseObject[i].room.name+"</td><td>"+responseObject[i].guest.name+"</td></tr>";
-                    }
-                    resultString+="</tbody>";
-                    document.getElementById("responseArea").innerHTML = resultString;
-                }
-                
-                function guestSubmit(){
-                    let guestName=document.getElementById("guestName").value;
-                    let guestEmail=document.getElementById("guestEmail").value;
-                    let guestPhoneNumber=document.getElementById("guestPhoneNumber").value;
-                    let guest = {name: guestName, email: guestEmail, phoneNumber: guestPhoneNumber};
-                    let guestJSON=JSON.stringify(guest);
-                    postRequest("/guests", guestJSON);
-                }
-                
-                function roomSubmit(){
-                    let roomName=document.getElementById("roomName").value;
-                    let roomMaxPeople=document.getElementById("roomMaxPeople").value;
-                    let roomPrice=document.getElementById("roomPrice").value;
-                    let room = {name: roomName, maxPeople: roomMaxPeople, price: roomPrice};
-                    let roomJSON=JSON.stringify(room);
-                    postRequest("/rooms", roomJSON);
-                }
-                
-                function bookingSubmit(){
-                    let bookingStartDate=document.getElementById("bookingStartDate").value;
-                    let bookingEndDate=document.getElementById("bookingEndDate").value;
-                    let bookingRoomId=document.getElementById("bookingRoomId").value;
-                    let bookingGuestId=document.getElementById("bookingGuestId").value;
-                    let booking = {startDate: bookingStartDate, endDate: bookingEndDate, roomId: bookingRoomId, guestId: bookingGuestId};
-                    let bookingJSON=JSON.stringify(booking);
-                    postRequest("/bookings", bookingJSON);
-                }
-            </script>
-    </body>
+                resultString+='</tr>';
+            }
+            resultString+='</tbody>';
+            document.getElementById("responseArea").innerHTML = resultString;            
+        }
+
+        function submitFormRequest(requestAdress, formName){
+            var form = document.getElementById(formName);
+            var data = new FormData(form);
+            var payload = {};
+            data.forEach((value, key) => {payload[key] = value});
+            form.reset();
+            var payloadJSON = JSON.stringify(payload);
+            postRequest(requestAdress, payloadJSON);
+        }
+    </script>
+</body>
+
 </html>
