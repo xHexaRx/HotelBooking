@@ -224,7 +224,9 @@
             var data = new FormData(form);
             var payload = {};
             data.forEach((value, key) => { payload[key] = value });
-            form.reset();
+            if(formName!=='bookingForm'){
+                form.reset();
+            }
             var payloadJSON = JSON.stringify(payload);
             postRequest(requestAdress, payloadJSON);
         }
